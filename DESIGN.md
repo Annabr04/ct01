@@ -1,55 +1,39 @@
 # audit_chain: keyed, checkpointed audit chain for CT-01 (DESIGN v0.3.5)
-Codename (docs only): Emerald Tablet. Code, files, CMake targets and identifiers use the plain name `audit_chain`.
-v0.3.5 (2026-11-11 ET): TEXT-ONLY. Scrum Master/Tech Lead rulings on the M1 implementation questions (0-7, normative, marked "M1 ruling") and review
+Code, files, CMake targets and identifiers use the plain name `audit_chain`.
+v0.3.5 (2026-11-11 ET): TEXT-ONLY. CT-01 rulings on the M1 implementation questions (0-7, normative, marked "M1 ruling") and review
 A012 (F66/F70/F71/F67 closed; new F73 MEDIUM, F74-F77 LOW) folded in. Zero byte change (tests/spec/layout_v0_3_5.py asserts every offset equals
-v0.3.4); codes tables append-only (tests/spec/codes_tables_v0_3_5.py asserts numbers and names equal v0.3.4). No A012 patch exists under
-audit/patches/ (checked). v0.3.4 kept as DESIGN.v0.3.4.md.
+v0.3.4); codes tables append-only (tests/spec/codes_tables_v0_3_5.py asserts numbers and names equal v0.3.4). Supersedes v0.3.4.
 v0.3.4 (2026-11-11 ET): TEXT-ONLY revision for review A011 (v0.3.3: SCHEMA CAN FREEZE with conditions; MEDIUM F66, F70, F71; LOW F67-F69,
 F72). NO byte, offset or size change (tests/spec/layout_v0_3_4.py asserts every offset equals v0.3.3: 144/180/216/316). Adds the frozen numeric
 tables (Appendix A, codes.hpp; tests/spec/codes_tables_v0_3_4.py), one d_agg rule, the corrected contiguity rule and the level-4 entry
-ordering. No A011 patch exists under audit/patches/ (checked). v0.3.3 kept as DESIGN.v0.3.3.md.
+ordering. Supersedes v0.3.3.
 v0.3.3 (2026-11-11 ET): Review A009 (on v0.3.1: PASS WITH CONDITIONS, MEDIUM F47-F52, LOW F53-F58) and A010 (v0.3.2 diff-check: PASS WITH
-CONDITIONS, MEDIUM F59-F63, LOW F64-F65) folded in. No A009/A010 patch exists under audit/patches/ (checked), so nothing was applied. Schema
+CONDITIONS, MEDIUM F59-F63, LOW F64-F65) folded in. Schema
 CHANGE for F60: SIGNED 308 -> 316 B (dfail_total u32 + ext_reserved u32); EVENT stays 180 B. Layout: tests/spec/layout_v0_3_3.py. Traceability
-§14 (A009/A010 rows). v0.3.2 kept as DESIGN.v0.3.2.md.
+§14 (A009/A010 rows). Supersedes v0.3.2.
 v0.3.2 (2026-11-11 ET): joint rulings C5 (audit-storage ladder REPLACES C1 backpressure; ACKs never stop for audit storage; GAP bounds),
-C6 (commissioning-gated lockdown behaviour, NV_commissioned bit) and C7 (KEYED_FAILED + TPM-recovery record), all HIPAA Lead + Tech Lead
-2026-11-11, relayed by Scrum Master, folded in and closed. C1-C7 all ruled; only Q7 open. v0.3.1 kept as DESIGN.v0.3.1.md.
-v0.3.1 (2026-11-11 ET): Tech Lead answers C1 (durability barrier, dedicated log filesystem, watermark backpressure) and C2 (per-boot
+C6 (commissioning-gated lockdown behaviour, NV_commissioned bit) and C7 (KEYED_FAILED + TPM-recovery record), folded in and closed
+2026-11-11. C1-C7 all ruled; only Q7 open. Supersedes v0.3.1.
+v0.3.1 (2026-11-11 ET): C1 (durability barrier, dedicated log filesystem, watermark backpressure) and C2 (per-boot
 platform lockdown) folded in and closed; new §5.6 reconciles the C1 watermark with HIPAA Q6 (verdict: CONFLICT, open item C5); new
-clarification C6 (phEnable refuse-to-start vs G7). v0.3 kept as DESIGN.v0.3.md. HIPAA Lead C3 (transfer totals, timestamp granularity) and C4
+clarification C6 (phEnable refuse-to-start vs G7). C3 (transfer totals, timestamp granularity) and C4
 (explicit digest method, genesis-recorded mode, TPM-only digest key) folded in and closed; layout: tests/spec/layout_v0_3_1.py (sizes unchanged).
 v0.3 (2026-11-11 ET): Review A008 (v0.2 PASS WITH CONDITIONS; new MEDIUM F39-F41, LOW F42-F46, exit-code conditions) fixed in the text;
-Tech Lead rulings (Q1-Q4, Q11-Q14, F45, sessions) and HIPAA Lead decisions (Q2, Q5, Q6, Q8, Q9, Q10, Q12), both relayed by the Scrum Master
-2026-11-11, folded in and marked where used. No A008 patch file exists under audit/patches/ (checked), so nothing was applied. v0.2 kept as
-DESIGN.v0.2.md; earlier: DESIGN.v0.1.md, DESIGN.v0.1-A007p1.md. Traceability: §14. Layout: tests/spec/layout_v0_3.py (v0_2 kept).
+rulings (Q1-Q4, Q11-Q14, F45, sessions) and decisions (Q2, Q5, Q6, Q8, Q9, Q10, Q12),
+2026-11-11, folded in and marked where used. Supersedes v0.2; earlier: v0.1, v0.1-A007p1. Traceability: §14. Layout: tests/spec/layout_v0_3.py (v0_2 kept).
 Author: CT-01 Scrum Master. Status: PROPOSED v0.3.5 (schema FROZEN per A011; A012 freeze stands), for design closure check before M1. Nothing implemented; nothing measured on target
 hardware; every cost or rate is UNMEASURED unless it cites a file; arithmetic is marked as arithmetic.
 NO PILOT USE AND NO "TAMPER-EVIDENT" CLAIM BEFORE M4 GO (A008 §5 condition). No 45 CFR 164.312 compliance claim (§10).
-Sources (read-only, /workspace/ct01): design/HIPAA_CHECKLIST.md §4 (:55-65); design/ADR-002-kek-hardware.md §5.2-5.6, §7; design/ENCRYPTION_KEY_MGMT.md
-§5, §6, "ct01_recv sealed delivered log"; design/DATA_MAP.md :102 (B8); design/CT01D.md :178 ("No KEK at startup"), :419 (Durability rule),
-:620-637 (F7 gate bench: --log-dir median 39.61-40.28, worst 35.58-38.02 MB/s, x86; targets median >= 25, worst >= 20); design/ARCHITECTURE.md
-§1, §10; src/lib/buffer.cpp (:335-348, :558, :739-758, :822); src/daemon/contingency_audit.hpp (:24-35); src/recv/recv_log.{hpp,cpp};
-src/recv/main.cpp (:769-926); src/include/ct01/kek_provider.hpp; src/lib/kek_tpm.cpp (:190-204, :229-281); src/daemon/protocol.hpp;
-src/include/ct01/frame.hpp; src/include/ct01/crash_point.hpp; LOGBOOK.md:475 (HIPAA review #8).
+Sources: CT-01 design documents (HIPAA checklist §4; ADR-002 key-encryption hardware; encryption key management; data map; daemon notes) and the existing device implementation of the sealed delivery log and TPM unseal path, used as read-only context for this design.
 Rules: synthetic data only; no edits to the CT-01 device tree; new tree for audit_chain sources and tests; no frame, CT1F, recvlog-1 or
 ct01.h change; off by default UNTIL a device is provisioned (§6.1).
 
 ## 0. What exists today (facts, cited)
-- Three plain-text, append-only, metadata-only audit files, none integrity-protected: buffer `<buffer_dir>/audit.log` (buffer.cpp:335-348),
-  `<state_dir>/contingency_audit.log` (contingency_audit.hpp:24-35), ct01_recv `<log_dir>.state/audit.log` (recv_log.cpp:146-162; main.cpp:880-900).
-  Write results are ignored at buffer.cpp:558, :756 (after the purge and its fsyncs, :745-753; audit fsync result ignored at :757), :822, and in
-  contingency_audit_write_raw (:29-35).
-- recvlog-1: AES-256-GCM per record + seq checks (recv_log.cpp:360-425), host-RAM wrap key, no external anchor ("log-end high-water", LOGBOOK:475).
-- kek_tpm.cpp: CreatePrimary/Create/Load/Unseal/FlushContext (+ probe calls); 0 Sign/HMAC/Certify/NV calls in src/; ESYS_TR_PASSWORD with
-  empty auth (:229, :255, :278, :281); userWithAuth objects (:196, :213); no policy, no salted or encrypted session; transient RSA-2048 primary
-  (:190-204), not ADR-002 §5.3's ECC SRK. Carried as "TPM sessions unencrypted" (LOGBOOK:475). ADR-002 is "Proposed"; no TPM hardware ordered.
-  audit_chain must not reuse that session pattern (§3.1).
-- Gap: HIPAA_CHECKLIST §4 :62-63, tamper-evident log + SIEM export "STILL REQUIRED BEFORE PILOT". HIPAA Lead decision 2026-11-11, relayed by
-  Scrum Master (Q8): checklist :59/:61 ("no audit log in code") were stale; the audit-log item is now marked PARTIAL. CLOSED for this doc.
-- No holder transport exists (no TLS). Tech Lead ruling 2026-11-11, relayed by the Scrum Master (Q12): the Tech Lead owns a transport-auth ADR
-  (TLS + VOID auth); DevOps schedules it for M4, before pilot. HIPAA Lead decision 2026-11-11 (Q12): mutual TLS 1.3 preferred, 1.2 minimum,
-  pinned holder certificates, before pilot.
+- The current CT-01 audit files are plain-text, append-only, and metadata-only; they are not integrity-protected, and write results are not always checked. This design covers that gap for events the device emits.
+- The existing sealed delivery log (recvlog-1) provides confidentiality and sequence checks, but it is not an external tamper-evident anchor for the audit chain.
+- The existing TPM key-unseal path must not be reused by audit_chain. audit_chain requires salted, parameter-encrypted HMAC sessions and the key templates in §3.1. ADR-002 remains Proposed.
+- Gap: a tamper-evident audit log and SIEM export remain required before pilot (HIPAA checklist). Earlier "no audit log in code" checklist items were stale; the audit-log item is now marked PARTIAL. CLOSED for this doc.
+- No holder transport exists yet (no TLS). A transport-auth ADR (TLS + VOID auth) is scheduled for M4, before pilot. Mutual TLS 1.3 is preferred, 1.2 minimum, with pinned holder certificates, before pilot.
 
 ## 1. Threat model (first)
 Assets: ORDER, COMPLETENESS and CONTENT of audit events. Never payload: no payload, no patient_ref, no unkeyed function of payload bytes, no
@@ -59,14 +43,14 @@ Attackers:
   group tss). Recomputes any unkeyed hash. Can edit config files (incl. `audit_chain=off`, §6.1).
 - A2 (live window [t0, t1]): A1 + TPM use as the service account (root or group tss = A2): unseal, use loaded keys, read memory; cannot
   extract fixedTPM private keys. Physical attacker = A2 today (no PCR binding, no secure boot; ADR-002 §5.5).
-- Platform hierarchy (A008 F45; Tech Lead ruling 2026-11-11, relayed by the Scrum Master): treat platformAuth as likely EMPTY on the Pi (no
+- Platform hierarchy (A008 F45; Ruling 2026-11-11): treat platformAuth as likely EMPTY on the Pi (no
   firmware takes the platform hierarchy), so A2 could e.g. TPM2_Clear (destroys chain keys and NV: DoS + forced chain replacement). Fix in §3.1.
   A009 F53: the reference TPM SETs phEnable on EVERY TPM2_Startup (CLEAR and STATE), so from Startup until the lockdown the platform
   hierarchy is open (empty auth after CLEAR; after a resume only a random platformAuth set earlier protects it). A009/A010 F50: TPM2_Clear
   (via an unset lockoutAuth or the boot window) deletes NV_epoch and NV_commissioned: fixed by §3.1 (random ownerAuth/lockoutAuth,
   ClearControl(disableClear), NV name checks, Release never honours `off`).
 - Insiders: group tss / host admin = A2; fleet-service admin can delete held checkpoints (the second holder is the only check, §6.3);
-  CT-01 as supplier of the key list (auditors who do not trust CT-01 need EK/AK evidence from the vendor CA). Escrow holder: REMOVED (Q2, §3.2).
+  CT-01 as supplier of the key list (reviewers who do not trust CT-01 need EK/AK evidence from the vendor CA). Escrow holder: REMOVED (Q2, §3.2).
 Out of scope: TPM silicon; a compromised verifier; compromise of BOTH holders; attacks on the SIEM; preventing deletion (we detect where §6.3 allows).
 Goals (tests in §8):
 G1 Changes before the last verified record detected (bit-flip, edit, reorder, splice, duplicate, middle deletion).
@@ -76,7 +60,7 @@ G3 Tail truncation, rollback and whole-chain replacement detected when a holder 
 G4 kill -9 at any point leaves a verifiable prefix; every returned append is in it.
 G5 Public verification with keys whose trust comes from TPM2_Certify + EK chain, never from the chain.
 G6 No unkeyed ePHI function, no exact per-frame length, no patient-linkable id in clear.
-G7 (A008 F41; HIPAA Lead decision 2026-11-11, relayed by Scrum Master, Q6) The audit chain never halts clinical delivery: a chain FAIL or a
+G7 (A008 F41; Decision 2026-11-11, Q6) The audit chain never halts clinical delivery: a chain FAIL or a
    missing chain opens a signed successor chain and latches FAULT; delivery continues.
 Honest limits:
 - Nothing proven about records written during [t0, t1]; A2 can rewrite everything not covered by a checkpoint a holder received before t0.
@@ -112,7 +96,7 @@ receivers need per-peer ranges (deferred, not in v1).
 | CPU per record | SHA-256 + HMAC (unmeasured) | SHA-256 | SHA-256 + HMAC (unmeasured) |
 Cadence (A007 F34): a CHECKPOINT within 10 s of the FIRST uncheckpointed record, or at 256 uncheckpointed records, whichever first; also on
 shutdown, before export, after recovery, at chain creation and around EPOCH_START; NO idle checkpoints. Each is exported to BOTH holders
-(Tech Lead ruling 2026-11-11, relayed by the Scrum Master, Q1: fleet service + SIEM over mutual TLS) when the link is up, queued otherwise.
+(Ruling 2026-11-11, Q1: fleet service + SIEM over mutual TLS) when the link is up, queued otherwise.
 Per-record TPM2_Sign stays rejected (unmeasured vs the 20 ms / 32-frame group budget, recv_log.hpp:47-49). The per-event TPM2_HMAC for
 digests (Q5) is ONE command per recv group (<= 50 groups/s at full rate, arithmetic from a007 layout_check.log); its latency is UNMEASURED
 (swtpm in M2, hardware in M5). If it does not fit the M4 gate, the Q5 fallback applies (dmode 2 ABSENT, set at the next epoch or successor; seq + bucketed length; §4.3).
@@ -121,7 +105,7 @@ TPM latency, honest consequence (A009 §3(a); NOT measured by us): published ECD
 better" than Sign per a 2024 PC-TPM survey cited by A009), and salted, encrypted sessions (required, §3.1) add cost. The budget is 20 ms per
 group at <= 50 groups/s (recv_log.hpp:47-49). The TPM executes one command at a time, so a checkpoint Sign (25-69 ms) stalls every queued
 HMAC. If TPM2_HMAC is near or above 20 ms, one HMAC per group blows the group budget and the Q11 throughput gates fail with audit on.
-Options (all UNMEASURED; NOT decided here; open question C8 for the Tech Lead + HIPAA Lead):
+Options (all UNMEASURED; NOT decided here; open question C8 for the CT-01):
 (O1) batch the digest HMAC: keep each group's inner hash in locked RAM and run ONE TPM2_HMAC over the inner hashes of all groups that share
      one durability barrier (groups queued while the TPM is busy commit together); needs dmethod 5 (reserved in §4.1 now, FAIL in v1).
 (O2) take checkpoint signing off the ACK path: Sign runs asynchronously and is scheduled between HMACs; cadence (10 s) stretches under load;
@@ -142,7 +126,7 @@ within the 20 ms budget AND the Q11 gates hold; otherwise NO-GO for that configu
 | S_e (checkpoint signing key) | ECDSA P-256; sign=1, decrypt=0, restricted=0, fixedTPM, fixedParent, sensitiveDataOrigin, userWithAuth=0, adminWithPolicy=1, noDA (F52), scheme fixed ECDSA/SHA-256 | TPM child of the SRK, blob `audit_chain/sign_<e>.tpm` | TPM2_Sign over SHA-256(DS_CKPT ‖ h) only |
 | AK | restricted signing key; MANDATORY at provisioning, EK-certified via MakeCredential/ActivateCredential | TPM | TPM2_Certify of every S_e and D_e; never used for anything else; S_e is never the AK |
 | NV_epoch, NV_export | NV indices, TPMA_NV_COUNTER, NOT TPMA_NV_ORDERLY | TPM NV | epoch index (in every key policy); on-device anchor (§3.5) |
-Tech Lead rulings 2026-11-11, relayed by the Scrum Master:
+Rulings 2026-11-11:
 - Q3 (CLOSED, YES with conditions): S_e is sign-only (no decrypt), fixedTPM/fixedParent; policy PolicyCommandCode(TPM2_Sign) AND auth
   (PolicySecret / authValue) [AND PolicyNV(NV_epoch == e), §3.4]. Every signed message is the fixed 56-byte pre-image DS_CKPT ‖ h
   (24 + 32 B; checked in layout_v0_3.py), so it begins with ASCII "c" (0x63) and can never parse as a TPMS_ATTEST (which begins with
@@ -150,19 +134,19 @@ Tech Lead rulings 2026-11-11, relayed by the Scrum Master:
 - Q13 (CLOSED, YES): AK mandatory at provisioning, EK-certified via credential activation; until hardware arrives, an swtpm EK CA (TEST-ONLY,
   never accepted by a production holder). M2 gate.
 - Q14 (CLOSED): counters non-ORDERLY (an orderly counter may jump forward after a non-orderly shutdown, A008 N4); NV handles from the TCG
-  owner-defined range, recorded in an ADR (to be written by the Tech Lead; this doc does not pick handle values); bumps per checkpoint
+  owner-defined range, recorded in an ADR (to be written; this doc does not pick handle values); bumps per checkpoint
   (NV_export) and per epoch (NV_epoch), at most once an hour; TPM datasheet endurance checked before M4 (no measured figure exists).
 - Sessions (CLOSED as a requirement): Unseal (R^t_e) and Sign (S_e), and also TPM2_HMAC (D_e) and NV writes, run in HMAC sessions SALTED to the
   SRK with parameter encryption (AES-CFB) before pilot. Sign has its own policy (above), because ADR-002 §5.5 covers Unseal only. Policies:
   R^t_e: PolicyCommandCode(TPM2_Unseal) AND auth AND PolicyNV(NV_epoch == e). D_e: PolicyCommandCode(TPM2_HMAC) AND auth AND PolicyNV(NV_epoch == e).
-- F45 / C2 (CLOSED). Tech Lead ruling 2026-11-11, relayed by the Scrum Master (F45): treat platformAuth as likely empty; lock the platform
-  hierarchy. Tech Lead 2026-11-11, relayed by Scrum Master (C2, AGREED): the lockdown runs on EVERY boot as an early systemd oneshot
+- F45 / C2 (CLOSED). Ruling 2026-11-11 (F45): treat platformAuth as likely empty; lock the platform
+  hierarchy. Ruling 2026-11-11 (C2, AGREED): the lockdown runs on EVERY boot as an early systemd oneshot
   (`ct01-tpm-lockdown.service`, plain name), ordered before networking and before ct01d; it PREFERS TPM2_HierarchyControl(TPM_RH_PLATFORM,
   enable=TPM_RH_PLATFORM, state=NO) (phEnable := 0) over setting a random platformAuth. A Release ct01d reads TPM_PT_STARTUP_CLEAR
   (TPM2_GetCapability) and requires phEnable == 0; what happens otherwise depends on commissioning (C6 ruling below). TPM firmware updates go
   through an explicit maintenance-mode boot that skips the lockdown and does not start ct01d. Verified on swtpm at M2 for a power cycle
   (TPM2_Startup(CLEAR)) and a resume (TPM2_Startup(STATE)), on hardware at M5.
-  Spec check requested by the Tech Lead (what I found; not fully confirmed):
+  Spec check (not fully confirmed):
   * TCG TPM 2.0 Library Part 1: Architecture (v1.85 copy read 2026-11-11 at iommu.com/datasheets/tpm/TPM-2.0-Library-v185-Part-1-Architecture.pdf,
     platform-controls text following clause 10.2 "Controls"): "On any _TPM_Init, phEnable is SET ... When phEnable is CLEAR, a _TPM_Init is
     required to SET it" and "On TPM Reset or TPM Restart, platformAuth is set to an EmptyAuth, and platformPolicy is set to an Empty Policy."
@@ -171,18 +155,18 @@ Tech Lead rulings 2026-11-11, relayed by the Scrum Master:
     TPM will set these attributes to their indicated defaults."
   * CORRECTION (A009 F53, credited to review A009, evidence from the Microsoft TPM 2.0 reference Hierarchy.c and c2_phEnable notes): the TCG /
     Microsoft reference implementation's HierarchyStartup() sets phEnable = TRUE on EVERY TPM2_Startup, including STATE (resume), and resets
-    platformAuth/platformPolicy only when the startup is NOT a resume. My v0.3.1/v0.3.2 reading ("resume suggests phEnable returns to its
+    platformAuth/platformPolicy only when the startup is NOT a resume. The v0.3.1/v0.3.2 reading ("resume suggests phEnable returns to its
     pre-suspend value") was WRONG for the reference code, and so was the brief's premise that Startup(STATE) preserves phEnable. Re-running
     the lockdown on resume is therefore REQUIRED, not belt-and-braces. Hardware TPMs are expected to follow the reference; verified on
     swtpm at M2 and on the target part at M5.
-  * Lockdown sequence (A009 F53; supersedes the C2 "prefer HierarchyControl over a random auth": both are now done, auth first; Tech Lead
+  * Lockdown sequence (A009 F53; supersedes the C2 "prefer HierarchyControl over a random auth": both are now done, auth first; Engineering
     acknowledgement requested as C11): (1) TPM2_HierarchyChangeAuth(TPM_RH_PLATFORM, 32 random bytes, discarded) THEN (2)
     TPM2_HierarchyControl(enable=TPM_RH_PLATFORM, state=NO). Run on EVERY boot and EVERY resume: the oneshot is ordered before any non-root
     unit and before networking; /dev/tpm0 is root-only (/dev/tpmrm0 group tss = A2 by definition); ct01d also applies the sequence itself at
     start, after resume and when its periodic phEnable re-check (PROPOSED every 60 s) finds phEnable == 1 with an empty platformAuth. The
     random platformAuth survives a resume, which closes the resume window that HierarchyControl alone leaves (phEnable is SET again by Startup).
     If HierarchyControl fails, ct01d still sets the random platformAuth (A010 F63) before entering C6 rule 2.
-- C6 (CLOSED). Joint ruling, Tech Lead with HIPAA Lead endorsement, 2026-11-11, relayed by Scrum Master (replaces the v0.3.1 C6 text):
+- C6 (CLOSED). Joint ruling, 2026-11-11 (replaces the v0.3.1 C6 text):
   1. Before commissioning (lockdown never verified on this device): kek_unavailable pattern (CT01D.md:178): process up, /status FAULT
      `lockdown_unverified`, every ingest 'F', nothing buffered. Commissioning blocks go-live until the lockdown is verified.
   2. After commissioning, if the per-boot (or post-resume) lockdown or the phEnable check fails (e.g. a reboot on the ward): keep delivering,
@@ -206,7 +190,7 @@ Tech Lead rulings 2026-11-11, relayed by the Scrum Master:
     is on site. Unverified on swtpm; M2 gate.
   * Hardening (A010 F63, A009/A010 F50; M2 gate):
     - Provisioning sets ownerAuth and lockoutAuth to random 32-byte values (custody: two-person, recorded in the key ceremony, PROPOSED
-      default; or discarded; Tech Lead decides, C10) and runs TPM2_ClearControl(disableClear = YES). With the platform hierarchy locked every
+      default; or discarded; to be decided, C10) and runs TPM2_ClearControl(disableClear = YES). With the platform hierarchy locked every
       boot, TPM2_Clear is then unavailable at runtime; re-enabling it needs the maintenance-mode boot (firmware/RMA only).
     - NV name check: ct01d reads TPM2_NV_ReadPublic for NV_commissioned, NV_epoch and NV_export and compares each NV Name (nameAlg ‖
       H(TPMS_NV_PUBLIC): attributes, authPolicy, dataSize) with the provisioned constants (read-only rootfs + inventory). A mismatch (e.g. a
@@ -236,9 +220,9 @@ in Release; never accepted by a holder.
 |---|---|---|
 | Device (ct01d, ct01_recv: one chain each) | blobs; K_e in RAM; D_e and S_e only inside the TPM | append, self-check, sign, digest |
 | Provisioning inventory (two-person, ADR-002 §5.6) | EK cert + chain, AK public + activation record, S_0 public + Certify, chain_id(s), GENESIS link, staff-uid allowlist reference (§4.4) | source of S_0 trust |
-| Public verifier (auditor) | --pubkeys from inventory/holder Certify evidence only; exported checkpoints | verify links + signatures; cannot forge |
+| Public verifier | --pubkeys from inventory/holder Certify evidence only; exported checkpoints | verify links + signatures; cannot forge |
 | Holders (fleet service AND customer SIEM; Q1) | every checkpoint (with d_agg, §4.3) + receipt time + pinned epoch ranges | anchor; fork/regression/replacement checks |
-Escrow: REJECTED. Tech Lead ruling and HIPAA Lead decision 2026-11-11, both relayed by the Scrum Master (Q2): no escrow. Losing R^t_e costs MAC
+Escrow: REJECTED. Ruling and Decision 2026-11-11 (Q2): no escrow. Losing R^t_e costs MAC
 (tag) verification on that device only; public checkpoint verification still works. The v0.2 keyed-verifier escrow path is removed. If escrow
 is ever mandated: per-epoch keys only (never a root, never D_e), two-person control, recorded in the key ceremony. --epoch-key (§6.2) is
 therefore TEST-ONLY and on-device only.
@@ -260,7 +244,7 @@ compromise (re-imaged device only). Blob writes: tmp + fsync + rename + dir fsyn
 3. Append EPOCH_START (epoch e+1; tag with K_{e+1} from the RAM copy; digest = key id of S_{e+1}; signed by S_e as a claim); fsync.
 4. TPM2_NV_Increment(NV_epoch) -> e+1. From here every epoch-e key fails policy, including restored blob copies (A007 F26).
 5. Append CHECKPOINT (epoch e+1, S_{e+1}); export with Certify evidence; wipe the RAM copy of R^t_{e+1} only after this returns.
-6. Old-epoch blobs (Tech Lead ruling 2026-11-11, relayed by the Scrum Master, Q4, CLOSED): destroy only after BOTH holders ACK the step-5
+6. Old-epoch blobs (Ruling 2026-11-11, Q4, CLOSED): destroy only after BOTH holders ACK the step-5
    checkpoint. The 7-day cap stays, but reaching it without both ACKs raises an alarm and escalates (FAULT-class status + export); it never
    destroys silently. At the cap, destroy only if a signed checkpoint covering the old epoch was exported; otherwise keep the blobs and keep
    alarming. Deletion is hygiene; step 4 is the revocation.
@@ -396,7 +380,7 @@ through `ct01_audit_admin reseed --expect N` run by a staff admin (actor_class 3
 the new expectation applies only after the record is durable) with subj_first = old, subj_last = new expected seq; it latches FAULT `reseed`,
 alarms both holders, and the next CHECKPOINT adds 1 to gaps_total (so the exit-6 qualifier `reseed` survives pruning). A `--expect-start` on
 a provisioned host without that record is ignored + config_mismatch (70).
-### 4.3 Keyed digests (HIPAA Lead decision 2026-11-11, relayed by Scrum Master, Q5: CLOSED, accepted under conditions)
+### 4.3 Keyed digests (Decision 2026-11-11, Q5: CLOSED, accepted under conditions)
 - grp = TPM2_HMAC(D_e, "ct01.audit_chain.v1.dgst.grp" ‖ inner), inner = SHA-256(u32le(n) ‖ for each frame: u64le(seq) ‖ u32le(len) ‖
   SHA-256(frame bytes)). inner is computed in locked scratch and wiped; never stored or exported. One TPM command per recv group (§2).
 - act = TPM2_HMAC(D_e, "ct01.audit_chain.v1.dgst.act" ‖ u8 kind ‖ u32le(len) ‖ id bytes); kind 2 = operator token (<= 64 B), kind 3 =
@@ -413,7 +397,7 @@ Condition check against the decision:
 | never given to the holder or SIEM | no export path; no escrow (Q2) | MET |
 | rotated per epoch | new D_e per epoch, PolicyNV(NV_epoch == e) | MET |
 | digests reach the holder only inside checkpoints | v0.2 exported per-record digests in JSONL and in "raw": CHANGED. JSONL omits digest and raw (§6.4); the link excludes the EVENT digest (§4.1); holders get d_agg in checkpoints only | MET |
-Fallback (HIPAA Lead 2026-11-11, relayed by Scrum Master, C4: CLOSED, ACCEPTABLE with three conditions):
+Fallback (Decision 2026-11-11, C4: CLOSED, ACCEPTABLE with three conditions):
 1. Explicit, no size change: per-record `dmethod` (offset 15, the former reserved0) and per-chain/epoch `dmode` (offset 30, the former high
    half of reserved1) say which method applies. dmethod 0 is invalid, so a zeroed record never reads as anything; digest = 0 is legal only
    with dmethod 2 (ABSENT), 3 (NOT_APPLICABLE) or 4 (KEYED_FAILED), and dmethod 1 requires a non-zero digest. Both bytes are inside the link,
@@ -428,23 +412,23 @@ Fallback (HIPAA Lead 2026-11-11, relayed by Scrum Master, C4: CLOSED, ACCEPTABLE
 3. Never a software digest key: digests come from TPM2_HMAC with D_e or do not exist. The Release writer has no code path that builds a
    software D_e (the DEV-ONLY software HMAC key in §3.1 is compiled only into test/dev targets; a Release CI check asserts the symbol is
    absent); a dev-built chain is never accepted by a holder.
-Runtime TPM2_HMAC failure under dmode 1 (C7, CLOSED: ruled, HIPAA Lead + Tech Lead 2026-11-11, relayed by Scrum Master): the record is written with dmethod 4
+Runtime TPM2_HMAC failure under dmode 1 (C7, CLOSED: ruled, CT-01 2026-11-11): the record is written with dmethod 4
 (KEYED_FAILED, digest zero), FAULT `digest_failed` latches (admin fault_ack, §5.5), the group is still ACKed (G7: delivery never stops on an
 audit-path failure) and the verifier counts it. This is not a mode switch: dmode stays 1, the failure is per record, visible and signed into
 the next checkpoint. When TPM2_HMAC succeeds again the writer appends record 71 tpm_recovered (C7 addition), which chains from the last good link: its digest
 commits to h of the last dmethod-1 record before the failure and its range/count cover exactly the dmethod-4 run (verifier recomputes both;
 mismatch = e_tpmrec FAIL). The FAULT still needs the admin fault_ack.
-C7 ruled conditions (HIPAA Lead 2026-11-11, relayed by Scrum Master): (i) no software-key fallback (no D_e outside the TPM in Release, as above);
+C7 ruled conditions (Decision 2026-11-11): (i) no software-key fallback (no D_e outside the TPM in Release, as above);
 (ii) TPM2_HMAC is retried with backoff (same PROPOSED schedule as §3.1: 1 s doubling to 15 min) while each failing group still gets dmethod 4;
 (iii) the affected count is recorded (record 71 count, plus the signed running total dfail_total at offset 176 of every signed record and the
 sticky sflags bit2, both v0.3.3 layout fields, A010 F60); (iv) the recovery record 71 chains from the last good link.
 Bounded retries (A009 F52): per group, at most 2 immediate retries on transient TPM_RC_RETRY / TPM_RC_YIELDED / TPM_RC_TESTING within the group
 budget, then dmethod 4; any other RC -> dmethod 4 at once; the 1 s .. 15 min backoff (ii) governs re-probing after the failure, not per group.
 D_e and S_e are noDA (§3.1). Exit: dmethod 4 -> bit2 -> exit 6 (§6.2), permanent (survives pruning: signed bit2 + dfail_total).
-JSONL/SIEM export without digest, tag and raw: CONFIRMED (HIPAA Lead 2026-11-11, relayed by Scrum Master, C4). dmethod and dmode ARE exported
+JSONL/SIEM export without digest, tag and raw: CONFIRMED (Decision 2026-11-11, C4). dmethod and dmode ARE exported
 (needed to recompute links); they reveal only whether a keyed digest exists, which actor_class already implies.
 
-### 4.4 Lengths and actors (HIPAA Lead decisions 2026-11-11, relayed by Scrum Master; Q9 and Q10 CLOSED, settled for the M0 freeze)
+### 4.4 Lengths and actors (Decisions 2026-11-11; Q9 and Q10 CLOSED, settled for the M0 freeze)
 Q9, bucketed lengths: len_bucket = 0 if unused, else 1 + ceil(log2(len)), i.e. bucket k covers (2^(k-2), 2^(k-1)] bytes (k=1: 1 B; k=7: 33-64 B).
 Range (A009 F47): 1..65, covering every u64 (bucket(2^64-1) = 65). Chosen over saturating at 33 because a session total passes 4 GiB in
 65-183 s at the measured 66.17/23.43 MB/s (CT01D.md:245-246, a009 q9_leakage.log), and a 72 aggregate over 60 s can approach it too;
@@ -454,21 +438,21 @@ Choice: POWER-OF-TWO, not 64-byte buckets. Frames range from ~48-50 B for synthe
 to max-block frames of tens of KiB. 64-byte buckets would still give ~1,000 distinguishable classes at the large end and split small frames at
 every 64 B; power-of-two gives 18 classes over 1 B .. 128 KiB (arithmetic, layout_v0_3.py) and puts all three observed vitals lengths in one
 bucket (k=7), i.e. 0 bits in the A007/A008 guess space. Exact totals appear only as aggregates in `bytes` on recv_transfer_end, and only when
-count >= 32 frames. HIPAA Lead 2026-11-11, relayed by Scrum Master (C3: CLOSED, CONFIRMED): transfers under 32 frames keep only bucketed
+count >= 32 frames. Decision 2026-11-11 (C3: CLOSED, CONFIRMED): transfers under 32 frames keep only bucketed
 totals; the threshold is counted in FRAMES (`count` of code 23 = frames in the session's seq range), not bytes or groups.
 Timestamp rule (C3): transfer start/end timestamps must be no finer than the per-frame record timestamps, so totals cannot be recovered by
 differencing. Writer enforcement: one quantizer in ChainWriter (no caller passes a raw time for 22/23); per-group records (16) keep 1 ms;
 codes 22/23 write ts_ms and mono_ms as floor(t / G_xfer) * G_xfer with G_xfer = 1000 ms (spec constant in v1, >= the 1 ms of code 16),
 and the end time is max(quantized now, quantized ts of the last code-16 record in the range), so the end never adds sub-second timing
 the group records do not already carry. Verifier: ts_ms % 1000 != 0 or mono_ms % 1000 != 0 on 22/23 is FAIL e_ts_gran.
-Design addition (stricter, same aim; HIPAA Lead may relax): exact totals are per transfer, never cumulative, and an exact total is written
+Design addition (stricter, same aim; this may be relaxed): exact totals are per transfer, never cumulative, and an exact total is written
 only if the session's seq range does not overlap the range of any earlier exact-total code 23 in the chain (a reconnect replays unACKed
 seqs, so overlapping totals would allow T_a - T_b differencing). Otherwise only bucket(total). The writer derives the highest exact-covered seq
 from the chain at open; the verifier checks it (e_xfer_overlap). A009 F54: on a successor chain, or when pruning removed the newest exact-total
 23, exact_hi starts at the recvlog's max forward seq, so no exact total is written until a session starts above it (conservative).
-Residual (A009 F54, a009 q9_leakage.log; HIPAA Lead made aware): at >= 32 frames, if 31 of the 32 lengths are known or predictable
+Residual (A009 F54, a009 q9_leakage.log; noted): at >= 32 frames, if 31 of the 32 lengths are known or predictable
 (fixed-size heartbeats, VOIDs), total minus the known lengths = the remaining frame's EXACT length (leave-one-out). Accepted by the >= 32
-rule as ruled; only the HIPAA Lead can tighten it (e.g. bucketed totals always). Group totals
+rule as ruled; it may be tightened later (e.g. bucketed totals always). Group totals
 (event 16) are bucketed. The keyed grp digest still includes exact lengths (keyed, TPM-held, not exported).
 Test (§8.7): no per-frame or per-group field carries an exact length (records for lengths L != L' in the same bucket are byte-identical in all
 unkeyed fields; `bytes` == 0 except the two allowed cases).
@@ -479,7 +463,7 @@ never pass this test; any actor that is a source/device (actor_class 4: paired o
 id is needed, a keyed pseudonym (act kind 3) or a role token in `reason`. A uid not in the allowlist -> actor_uid = 0, reason
 actor_unregistered, FAULT-class warning. Registry rule (A009 F58): uids are never derived from patient ids (an admin creating a uid equal
 to an MRN is a registry violation); the allowlist hash is in GENESIS (§4.1). The verifier rejects actor_uid != 0 with actor_class 0 or 4 [e_field]. A patient-linked id in clear is
-unrepresentable. (b) The uid-to-person registry is access-controlled, kept outside the log, and REQUIRED BEFORE PILOT (owner: HIPAA Lead with
+unrepresentable. (b) The uid-to-person registry is access-controlled, kept outside the log, and REQUIRED BEFORE PILOT (owner: compliance, with
 customer IT; §12 pre-pilot list). A shared service uid attributes actions to the service, not a person (A008 §6).
 
 ## 5. Crash safety and durability
@@ -492,16 +476,16 @@ boundary and continue on the §5.6 ladder. EIO from write(), or ANY error from f
 writer NEVER retries fdatasync on that fd (after a writeback error Linux may drop the dirty pages and report success next time), closes it,
 and starts the §5.4 successor in a fresh segment. If the successor cannot be created or synced: §5.6 level-4 handling (count-only, durable
 counter file). The writer is BROKEN only if neither works.
-Space (A008 F41.4; Tech Lead 2026-11-11, relayed by Scrum Master, C1; watermark behaviour REPLACED by the joint C5 ruling): ONE dedicated log
+Space (A008 F41.4; Ruling 2026-11-11, C1; watermark behaviour REPLACED by the joint C5 ruling): ONE dedicated log
 filesystem (its own partition on the Pi) holding only the recvlog and the audit chain on the receiving host (only the ct01d chain on the
 device), instead of a quota. Audit segments are preallocated with fallocate (FALLOC_FL_KEEP_SIZE) at roll. The reserved-space watermark (value
 set at M4 from the measured event rate, UNMEASURED) no longer stops ACKs: crossing it starts the §5.6 ladder. ACKs never stop for audit
 storage; a group is still ACKed only after the record is durable at the current ladder level (or counted, level 4). Arithmetic for sizing (not
 a measurement): one EVENT record per recv group, 180 B x <= 50 groups/s = 9,000 B/s = 32.4 MB/h = 777.6 MB per 24 h at the full group rate.
-5.2 Durability classes (A007 F30; Tech Lead ruling 2026-11-11, relayed by the Scrum Master, Q11: approved IN PRINCIPLE, NOT signed off)
+5.2 Durability classes (A007 F30; Ruling 2026-11-11, Q11: approved IN PRINCIPLE, NOT signed off)
 | Class | Events | Rule |
 |---|---|---|
-| fail-closed (ladder levels 1-3; level 4 counted, §5.6), same durability barrier as the recv group | 16, 17 | Tech Lead 2026-11-11, relayed by Scrum Master (C1, CLOSED): Q11 means ONE durability barrier per group commit, not one syscall. Preferred: write the chain record and the recvlog group (incl. COMMIT), then fdatasync the recvlog fd and the audit-chain fd IN PARALLEL (two threads or io_uring); ACK the group only after BOTH succeed; directory fsync on segment create, as today. Fallback only: one syncfs(2), which needs kernel >= 5.8 (error reporting) and a filesystem holding only the two logs; CHECKED AT OPEN (A009 F55): uname release >= 5.8 AND st_dev(recvlog dir) == st_dev(chain dir) AND the mount is the dedicated log mount (mountinfo) with no top-level entries other than recvlog/, audit_chain/ and lost+found; otherwise the parallel path is used. recvlog-fd failure = no ACK for that group (the data is not durable): RecvLog rolls back to the last COMMIT and rotates (recv_log.cpp:645-658),
+| fail-closed (ladder levels 1-3; level 4 counted, §5.6), same durability barrier as the recv group | 16, 17 | Ruling 2026-11-11 (C1, CLOSED): Q11 means ONE durability barrier per group commit, not one syscall. Preferred: write the chain record and the recvlog group (incl. COMMIT), then fdatasync the recvlog fd and the audit-chain fd IN PARALLEL (two threads or io_uring); ACK the group only after BOTH succeed; directory fsync on segment create, as today. Fallback only: one syncfs(2), which needs kernel >= 5.8 (error reporting) and a filesystem holding only the two logs; CHECKED AT OPEN (A009 F55): uname release >= 5.8 AND st_dev(recvlog dir) == st_dev(chain dir) AND the mount is the dedicated log mount (mountinfo) with no top-level entries other than recvlog/, audit_chain/ and lost+found; otherwise the parallel path is used. recvlog-fd failure = no ACK for that group (the data is not durable): RecvLog rolls back to the last COMMIT and rotates (recv_log.cpp:645-658),
 the receiver's expected seq rolls back, ct01d keeps the frames and replays them under the same seq after reconnect (CT01D.md:197), and the
 writer appends 68 recv_group_rolled_back (reason recvlog_sync_failed) for the group's chain record if that record is durable; the replay gets a
 fresh 16. Audit-fd ENOSPC = §5.6 ladder (ACK continues); audit-fd EIO or any audit-fd fdatasync error = chain FAILED (no fdatasync retry, F51)
@@ -515,7 +499,7 @@ Crash reconciliation at ct01_recv open (both directions, at most one in-flight g
 recvlog group not committed -> recv_group_rolled_back (68); anything larger -> 68 + FAULT.
 5.3 Torn-tail rule (newest file only): region from the first structurally failing record to EOF is torn iff its length < rec_len of the record it
 starts (header parse) or < 180 B (unparseable). Against A1 = arbitrary truncation. Anything else = FAIL.
-5.4 Recovery and FAIL handling (A008 F41; HIPAA Lead decision 2026-11-11, relayed by Scrum Master, Q6: CLOSED, AGREED)
+5.4 Recovery and FAIL handling (A008 F41; Decision 2026-11-11, Q6: CLOSED, AGREED)
 Recovery (torn tail, under the lock; only after the §3.5 open sequence steps 1-2 passed, A009 F48): (1) refuse if the boundary is at/below the
 bump checkpoint (§3.5) or a holder-ACKed one -> FAIL; (2) quarantine region to torn_<chain_id>_<seq>.bin, fsync, fchmod 0400 + fsync, dir fsync; (3) ftruncate + fsync; (4) append event 64 + CHECKPOINT
 (recoveries_total + 1; ALWAYS bumps NV_export: append, fsync, TPM2_NV_Increment, A009 F57); export to both holders immediately; FAULT latched (§5.5).
@@ -536,7 +520,7 @@ signed, exported immediately, latches FAULT and is alarmed by holders.
 5.5 FAULT latch (Q6): FAULT raised by any chain event stays latched across restarts (recorded in the chain itself, recomputed at open) until a
 staff admin runs `ct01_audit_admin ack-fault`, which appends fault_ack (69) with the actor uid; the latch clears only after that append returns.
 
-5.6 Audit storage ladder (C5, CLOSED: FORMAL JOINT RULING, HIPAA Lead + Tech Lead 2026-11-11, relayed by Scrum Master; REPLACES C1 backpressure)
+5.6 Audit storage ladder (C5, CLOSED: FORMAL JOINT RULING, CT-01 2026-11-11; REPLACES C1 backpressure)
 The v0.3.1 analysis found a conflict in rationale (C1 backpressure let an A1 who fills the log filesystem stop all receiver ACKs, the lever Q6
 removed). The ruling: the ladder below is THE behaviour (no config or build switch back to backpressure); ACKs never stop for audit storage.
 Level 0, step (e), always on: the log filesystem is writable only by the receiver service user; every level change is alarmed off-box at once
@@ -574,11 +558,11 @@ Level 4, bounded step (c), count-only GAP: reserve exhausted: groups are still A
   crash the gap is rebuilt from the counter file (v0.3.3), with recvlog vs chain coverage only as a cross-check (the recvlog is not chained and can be cut at a COMMIT boundary, A010 F61); (ii) as soon as space returns the writer
   appends record 66 chain_gap (reason audit_space, count = groups without a per-group record), covered by the next CHECKPOINT, so gaps_total
   rises and every later verification exits 6 (ok_recovered, permanent); (iii) the HIPAA bounds below.
-HIPAA bounds on GAP (HIPAA Lead, same ruling):
+HIPAA bounds on GAP (same ruling):
 - The GAP FAULT stays latched until an admin acks it; the ack is itself an audit record: REUSE record 69 fault_ack with reason `gap` and
   subj_first = seq of the record 66 it acknowledges (fail-closed: the ack takes effect only after it is durable, i.e. after space returns).
 - A gap open > 24 h escalates to incident review (holder alarm `gap_24h`), matching the device 24 h retention FAULT (ct01_buffer.h:9, :61).
-  A010 F65 recommends incident review at level-4 ENTRY, keeping gap_24h as a second escalation: OPEN for the HIPAA Lead before pilot (C12);
+  A010 F65 recommends incident review at level-4 ENTRY, keeping gap_24h as a second escalation: OPEN before pilot (C12);
   not decided here (holders already alarm on entry).
 - Every gap (each record 66 and each level-4 episode) goes into the customer's risk analysis and incident log (runbook item; holders export
   the record 66/69 pairs for it). This is a process requirement, not a compliance claim (§10).
@@ -586,10 +570,10 @@ Scope: the ladder covers AUDIT storage only. If the shared partition is so full 
 ACK durable data at all: existing recvlog behaviour (ENOSPC, writer BROKEN), and the device then buffers: 2.0 GiB, WARNING >= 60% / 30 min,
 FAULT >= 85% / 4 h, at 100% CT01_E_FULL and 'F' to sources ("never silent drop"), 24 h retention FAULT (ct01_buffer.h:6-9, :56, :61;
 CT01D.md:97; STATUS_UI_CONTRACT.md:74). Sensor-side loss then depends on per-integration source retention, an open pre-pilot condition
-(LOGBOOK:214, HIPAA Lead 2026-10-19 11:39 ET). The fallocated audit areas make sure audit is never the cause of that case.
+(2026-10-19 11:39 ET). The fallocated audit areas make sure audit is never the cause of that case.
 What the clinician sees: on the device kiosk nothing changes at levels 1-4 (ACKs continue, state OK, data reaches the clinical system).
 Audit-storage state is visible only on the receiver status, the holders and the SIEM. An 'audit full' wire reason code to show it on the
-device is a pre-pilot protocol change, routed through the Tech Lead's transport ADR; a nice-to-have, not a pilot blocker; nothing in the demo.
+device is a pre-pilot protocol change, routed through the transport ADR; a nice-to-have, not a pilot blocker; nothing in the demo.
 Tests: §8.9 (ladder).
 ## 6. Verifier, outputs and the holder contract
 ### 6.1 Chain creation and the off switch (A008 F40, F41)
@@ -678,7 +662,7 @@ monotonicity + base + observed increments are checked.
 Exit-code matrix additions (§8.11, M1): successor chain with later anchor -> 6 (A009 S10 now 6, not 0); truncation + one bit flip ->
 FAIL -> successor whose GENESIS records fail reason, last good seq, v_chain, v_tpm (and e_nv_regress when the cut crossed a bump); all-dmethod-4
 chain -> 6; level-4 episode with space never returning -> 6 + warning gap_open; level-4 episode with count 0 rebuilt -> still 6 (+1 at entry).
-### 6.3 Holder contract (Tech Lead ruling 2026-11-11, relayed by the Scrum Master, Q1: CLOSED, YES; M4 gate)
+### 6.3 Holder contract (Ruling 2026-11-11, Q1: CLOSED, YES; M4 gate)
 Both holders (CT-01 fleet service and customer SIEM collector), over mutual TLS (Q12: TLS 1.3 preferred, 1.2 minimum, pinned holder certs):
 1. Record receipt time (only trusted time); keep every checkpoint (seq, epoch, link, sig, nv_export, counters, d_agg) per chain_id.
 2. Verify signatures with their own key list (inventory S_0 + Certify-verified S_{e+1}) and pinned epoch ranges.
@@ -765,9 +749,9 @@ start of M1. An earlier independent model verifier must be updated to v0.3 or re
 audit_chain_naive_verify.py. Gates: >= 1 h continuous per target, 0 findings; >= 12 h cumulative before M4.
 
 ## 10. HIPAA impact (no compliance claim)
-- Touches audit controls and audit-record integrity. The HIPAA Lead's review would look at the areas of 45 CFR 164.312(b) and 164.312(c)(1);
+- Touches audit controls and audit-record integrity. A HIPAA review would look at the areas of 45 CFR 164.312(b) and 164.312(c)(1);
   this design does not claim either. No pilot use and no "tamper-evident" claim before M4 GO.
-- HIPAA Lead decisions folded in (2026-11-11, relayed by Scrum Master): Q5 keyed digest under conditions (§4.3), Q6 keep delivering +
+- Decisions folded in (2026-11-11): Q5 keyed digest under conditions (§4.3), Q6 keep delivering +
   successor + latched FAULT (§5.4-5.5), Q8 checklist item partial (§0), Q9 bucketed lengths (§4.4), Q10 staff uid in clear with conditions
   (§4.4), Q2 no escrow (§3.2), Q12 mTLS (§0, §6.3).
 - Pre-pilot prerequisites created by this design: uid-to-person registry (access-controlled, outside the log); TLS transport ADR + holders;
@@ -786,7 +770,7 @@ audit_chain_naive_verify.py. Gates: >= 1 h continuous per target, 0 findings; >=
 - Successor-chain automation could hide repeated tampering in noise: holders alarm on every successor; FAULT needs a staff ack.
 - Clock evidence weak by design; outputs label it writer_reported.
 
-## 12. Milestones (separate tree; no merge, push or ct01 edit without Scrum Master routing and the user's go-ahead)
+## 12. Milestones (separate tree; no merge, push or ct01 edit without the project owner's routing and the user's go-ahead)
 - M0: schema freeze (v0.3.3 layout: EVENT 180 / SIGNED 316, codes.hpp from §4.2, sflags bits 0-2, Q9/Q10 settled), reference model + golden
   vectors. GO: independent diff-check of v0.3.3 against the A009/A010 pre-freeze set (F47, F48, F49, F51, F52, F60, F61, F64).
 - M1 (software keys): writer + verifier + successor/FAULT logic (G7) + exit-code matrix §8.11 (incl. S3b, S3c, V0). GO: §8.1-8.11, 8.13 green
@@ -795,21 +779,21 @@ audit_chain_naive_verify.py. Gates: >= 1 h continuous per target, 0 findings; >=
   device path and CLI; x86 dev-box append cost reported (labelled).
 - M2 (swtpm, "not hardware"): §8.12 all pass. GO: AK mandatory + credential activation with swtpm EK CA (Q13); S_e/D_e templates and policies
   (Q3, sessions); NV non-ORDERLY + F39 order/open rule; PolicyNV revocation; platform-hierarchy oneshot leaves phEnable == 0 after a power cycle
-  (Startup CLEAR) AND a resume (Startup STATE) (F45, C2); F50/F63 (ownerAuth/lockoutAuth random, disableClear, NV name checks, pinned PolicySigned), F53 lockdown order on CLEAR and STATE, F56 successor keys, F57 always-bump; C6: NV_commissioned policy (set-only, K_comm), rule 1 'F' pattern before commissioning, rule 2 deliver + FAULT + blocked seal/AK/rotation after; TPM2_HMAC latency recorded; Tech Lead review of TPM code; NV handle ADR (Q14).
+  (Startup CLEAR) AND a resume (Startup STATE) (F45, C2); F50/F63 (ownerAuth/lockoutAuth random, disableClear, NV name checks, pinned PolicySigned), F53 lockdown order on CLEAR and STATE, F56 successor keys, F57 always-bump; C6: NV_commissioned policy (set-only, K_comm), rule 1 'F' pattern before commissioning, rule 2 deliver + FAULT + blocked seal/AK/rotation after; TPM2_HMAC latency recorded; review of TPM code; NV handle ADR (Q14).
 - M3: CLI (incl. --checkpoints), JSONL, admin tool; fuzz 1-8. GO: >= 1 h each, 0 findings, >= 12 h cumulative; phi_scan clean.
-- M4: hooks in a COPY of ct01 + both holders over mutual TLS (transport-auth ADR by the Tech Lead, scheduled by DevOps, Q12). GO: Durability barrier = parallel fdatasync of both fds (C1), dedicated log partition + C5 ladder levels 0-4 and GAP bounds tested (§8.9 on x86 with a small partition), C5 hardening (0700 mount, resuid
+- M4: hooks in a COPY of ct01 + both holders over mutual TLS (transport-auth ADR, scheduled by DevOps, Q12). GO: Durability barrier = parallel fdatasync of both fds (C1), dedicated log partition + C5 ladder levels 0-4 and GAP bounds tested (§8.9 on x86 with a small partition), C5 hardening (0700 mount, resuid
   reserved blocks, recvlog project quota, per-device rate limits), F59 aggregate slot, F62 reserve protection, F54 tests, F55 ordering and syncfs
   checks, F58 read-only rootfs + compiled-in dir + allowlist hash, holder fetch-last-checkpoint (F49).
   Q1 holder contract incl. 3-way fork check; Q11 SIGN-OFF conditions: CT01D gates re-run with audit ON (--log-dir median >= 25 MB/s and worst
   >= 20 MB/s, CT01D.md:634) and kill -9 with 0 lost and 0 gaps, on x86 now (Pi 5 later, M5); TPM datasheet endurance checked (Q14);
-  Q5 conditions still met; G7 demonstrated (FAIL and missing-chain scenarios keep delivering); Tech Lead + HIPAA Lead review.
+  Q5 conditions still met; G7 demonstrated (FAIL and missing-chain scenarios keep delivering); design review.
   NO-GO if the gates fail with audit on.
 - M5 (blocked on TPM purchase): hardware latency (Sign, HMAC, NV), platform hierarchy on hardware, Pi 5 gate re-run. EXPLICIT GO/NO-GO for
   dmode 1 with one TPM2_HMAC per group (§2, C8): NO-GO unless p99 group latency fits 20 ms with checkpoint signing running. GO for pilot only after
-  HIPAA Lead review AND the pre-pilot items (§10) exist.
+  a HIPAA review AND the pre-pilot items (§10) exist.
 
 ## 13. Tie-in to the pre-pilot gap
-Would close, once M4 passes and the HIPAA Lead verifies (not before, and no "tamper-evident" claim before then): the tamper-evidence half of
+Would close, once M4 passes and a HIPAA review verifies (not before, and no "tamper-evident" claim before then): the tamper-evidence half of
 HIPAA_CHECKLIST §4 :62 for events CT-01 emits today, against A1; truncation/rollback/replacement detection with holders, and on device at NV
 granularity; a SIEM export format and an independent verifier. Partly addresses the recvlog high-water item (inconsistent rollback only).
 Does NOT close: network forwarding without the TLS ADR; events no code emits; NTP time; retention; A2 compromise; physical attackers without
@@ -825,9 +809,9 @@ secure boot; TPM hardware; the ignored-error behaviour of the existing text audi
 | F42 ok_recovered not permanent | LOW | §4.1 recoveries_total/gaps_total, §6.2 exit 6 rule, §6.3.4, §8.2 S3b/S3c | fixed; S3b limit stated |
 | F43 clock fields | LOW | §1 time, §4.1 writer-reported + sflags.safe, §6.2 JSON label | fixed |
 | F44 rotation order | LOW | §3.4 steps 1, 3, 5 and open-time crash path | fixed |
-| C3 transfer totals / timestamps (HIPAA Lead) | — | §4.1 ts rows, §4.4, §6.2 e_ts_gran/e_xfer_overlap, §8.7 | fixed |
-| C4 digest fallback (HIPAA Lead) | — | §4.1 dmethod/dmode/digest/d_agg rows, §4.3 conditions 1-3, §6.2 digest JSON, §8.7 | fixed; C7 ruled (record 71) |
-| F45 platform hierarchy | LOW | §1, §3.1 (Tech Lead ruling + C2: per-boot oneshot, HierarchyControl, phEnable check, resume, spec citation), §8.12, §12 M2/M5 | fixed; C6 ruled (§3.1) |
+| C3 transfer totals / timestamps (compliance) | — | §4.1 ts rows, §4.4, §6.2 e_ts_gran/e_xfer_overlap, §8.7 | fixed |
+| C4 digest fallback (compliance) | — | §4.1 dmethod/dmode/digest/d_agg rows, §4.3 conditions 1-3, §6.2 digest JSON, §8.7 | fixed; C7 ruled (record 71) |
+| F45 platform hierarchy | LOW | §1, §3.1 (Ruling + C2: per-boot oneshot, HierarchyControl, phEnable check, resume, spec citation), §8.12, §12 M2/M5 | fixed; C6 ruled (§3.1) |
 | F41.4 reserved space (re-done for C1) | MEDIUM | §5.1 dedicated log filesystem + fallocate, §5.2 barrier, §5.6 C5 ladder + GAP bounds, §8.9 | fixed; C5 ruled |
 | F47 len_bucket range | MEDIUM (A009) | §4.1 len_bucket 1..65, §4.4 justification, §8.7, layout_v0_3_3.py | fixed (pre-freeze) |
 | F48 counter-acknowledged vacuous; NV vs recovery order | MEDIUM (A009) | §3.5 bump checkpoint + open sequence, §5.4 recovery precondition, §8.2 | fixed (pre-freeze) |
@@ -847,7 +831,7 @@ secure boot; TPM hardware; the ignored-error behaviour of the existing text audi
 | F62 reserve shrink | MEDIUM (A010) | §5.6 reserve protection + detection | text-only; M4 |
 | F63 NV_commissioned redefine, PolicySigned, K_comm | MEDIUM (A010) | §3.1 hardening | text-only; M2 |
 | F64 exit/verifier rules 66/69/71/72/74/75 | LOW (A010, pre-freeze) | §6.2 per-code table + matrix additions, §4.2 | fixed (pre-freeze) |
-| F65 incident review at level-4 entry | LOW (A010) | §5.6 HIPAA bounds | deferred to HIPAA Lead (C12) |
+| F65 incident review at level-4 entry | LOW (A010) | §5.6 HIPAA bounds | deferred (C12) |
 | F66 numeric reason tables | MEDIUM (A011) | Appendix A (codes.hpp: e_* 0-40, per-code reasons, exit effects), §4.1 reason row, §4.2 GENESIS zero rule, codes_tables_v0_3_4.py | fixed (before M1 GO) |
 | F67 level-4 entry ordering | LOW (A011) | §5.6 level 4 ordering sentence; C13 | fixed in text |
 | F70 contiguity false FAILs | MEDIUM (A011) | §6.2 contiguity rule (17 included; resets on 68 / 22 reseed / GENESIS; lower bound for 66 only), §4.2 66/72 rows, §5.6 | fixed (before M1 GO) |
@@ -876,28 +860,28 @@ Deferred list (A011; text owner: design, implementation: the library, gate shown
 - Earlier gates unchanged: M2 F50, F53, F56, F57, F63; M4 F54, F55, F58, F59, F62; before pilot F65 (C12).
 
 ## Open questions (owners decide)
-Closed in v0.3 (marked where folded in): Q1, Q2, Q3, Q4, Q12, Q13, Q14 (Tech Lead rulings 2026-11-11, relayed by the Scrum Master; Q2 and Q12
-also HIPAA Lead decisions); Q5, Q6, Q8, Q9, Q10 (HIPAA Lead decisions 2026-11-11, relayed by Scrum Master).
-Q11 (Tech Lead): approved in principle; SIGN-OFF is an M4 gate (conditions §12 M4). Remains a gate, not an open design question.
+Closed in v0.3 (marked where folded in): Q1, Q2, Q3, Q4, Q12, Q13, Q14 (Rulings 2026-11-11; Q2 and Q12
+also compliance decisions); Q5, Q6, Q8, Q9, Q10 (Decisions 2026-11-11).
+Q11: approved in principle; SIGN-OFF is an M4 gate (conditions §12 M4). Remains a gate, not an open design question.
 Still open:
 - Q7 (Product, low priority) SIEM field mapping beyond JSONL. Recommendation: JSONL is fine; any mapping keeps fixed enums, no free text.
   Proposed default: JSONL only.
 Clarifications (they do not reopen the rulings). C1-C7 all ruled. New in v0.3.3 (from A009/A010): C8-C12 OPEN; new in v0.3.4: C13 OPEN (A012 recommendation noted); Q7 still open.
 | # | Owner | Item | Status |
 |---|---|---|---|
-| C1 | Tech Lead | Meaning of "same group commit/fsync" for two files | CLOSED (Tech Lead 2026-11-11, relayed by Scrum Master): one durability barrier per group, parallel fdatasync of both fds, ACK after both; syncfs fallback (kernel >= 5.8, two-log filesystem); dedicated log partition, fallocate (§5.1, §5.2); its watermark backpressure is REPLACED by C5 |
-| C2 | Tech Lead | Platform lockdown every boot? | CLOSED (Tech Lead 2026-11-11, relayed by Scrum Master): per-boot oneshot before networking and ct01d, HierarchyControl preferred, Release phEnable check, maintenance-mode boot for firmware; resume also covered after my spec check (§3.1) |
-| C3 | HIPAA Lead | Transfers under 32 frames keep bucketed totals (Q9 reading) | CLOSED (HIPAA Lead 2026-11-11, relayed by Scrum Master): CONFIRMED, threshold in frames, plus the timestamp-granularity rule (§4.4) |
-| C4 | HIPAA Lead | D_e in the TPM; explicit fallback | CLOSED (HIPAA Lead 2026-11-11, relayed by Scrum Master): ACCEPTABLE with conditions (1) explicit dmethod/dmode, (2) genesis/epoch config, never a runtime switch, (3) TPM HMAC or no digest; export without digest/tag/raw confirmed (§4.3) |
-| C5 | HIPAA Lead + Tech Lead (joint) | Full log filesystem vs Q6 | CLOSED (formal joint ruling 2026-11-11, relayed by Scrum Master): ladder (e), (b), (d), bounded (c) is THE behaviour, ACKs never stop for audit storage, GAP bounds; 'audit full' wire code pre-pilot via transport ADR, not a blocker, not in demo (§5.6) |
-| C6 | Tech Lead with HIPAA endorsement | phEnable check vs G7 | CLOSED (joint ruling 2026-11-11, relayed by Scrum Master): before commissioning kek_unavailable pattern; after, deliver + latched FAULT + alarm + backoff, block seals/AK/rotation; no plaintext or software keys; > 24 h incident review; NV_commissioned set-only bit + record 73 (§3.1) |
-| C7 | HIPAA Lead + Tech Lead | Runtime TPM2_HMAC failure | CLOSED (ruled 2026-11-11, relayed by Scrum Master): dmethod 4 KEYED_FAILED + latched FAULT, delivery continues; record 71 tpm_recovered chains from the last good link (§4.3) |
-| C8 | Tech Lead + HIPAA Lead | TPM latency: if M5 shows one TPM2_HMAC per group does not fit 20 ms, pick O1 batched HMAC (dmethod 5), O2 async Sign, or O3 dmode 2 (§2) | OPEN (decide by M5) |
-| C9 | Tech Lead + HIPAA Lead | After a TPM Clear on a commissioned device (NV_commissioned gone): keep C6 rule 1 (all 'F'), or treat a verified record 73 under the inventory S_0 key as proof of commissioning and use rule 2 (§3.1) | OPEN (by M2) |
-| C10 | Tech Lead | ownerAuth / lockoutAuth custody: two-person sealed in the key ceremony (PROPOSED) or discarded (§3.1) | OPEN (by M2) |
-| C11 | Tech Lead | Acknowledge that A009 F53 makes random platformAuth + HierarchyControl both mandatory, auth first (amends C2's "prefer HierarchyControl") | OPEN (by M2) |
-| C13 | Tech Lead + HIPAA Lead | A011 F67: if the level-4 entry (75 + signed CHECKPOINT + NV bump) keeps failing (control slice unwritable, TPM Sign failing), keep withholding ACKs (PROPOSED, the fail-closed reading), or deliver count-only with alarm only; the first conflicts with C5 "ACKs never stop for audit storage" in this narrow case (§5.6). A012 recommends an explicit time bound: after N s of failed entry fall back to count-only with a holder alarm (the counter file is durable anyway). Routed to the leads; not decided | OPEN (by M4) |
-| C12 | HIPAA Lead | A010 F65: incident review at level-4 entry instead of after 24 h (gap_24h kept as second escalation) (§5.6) | OPEN (before pilot) |
+| C1 | Engineering | Meaning of "same group commit/fsync" for two files | CLOSED (Ruling 2026-11-11): one durability barrier per group, parallel fdatasync of both fds, ACK after both; syncfs fallback (kernel >= 5.8, two-log filesystem); dedicated log partition, fallocate (§5.1, §5.2); its watermark backpressure is REPLACED by C5 |
+| C2 | Engineering | Platform lockdown every boot? | CLOSED (Ruling 2026-11-11): per-boot oneshot before networking and ct01d, HierarchyControl preferred, Release phEnable check, maintenance-mode boot for firmware; resume also covered after the spec check (§3.1) |
+| C3 | Compliance | Transfers under 32 frames keep bucketed totals (Q9 reading) | CLOSED (Decision 2026-11-11): CONFIRMED, threshold in frames, plus the timestamp-granularity rule (§4.4) |
+| C4 | Compliance | D_e in the TPM; explicit fallback | CLOSED (Decision 2026-11-11): ACCEPTABLE with conditions (1) explicit dmethod/dmode, (2) genesis/epoch config, never a runtime switch, (3) TPM HMAC or no digest; export without digest/tag/raw confirmed (§4.3) |
+| C5 | CT-01 (joint) | Full log filesystem vs Q6 | CLOSED (formal joint ruling 2026-11-11): ladder (e), (b), (d), bounded (c) is THE behaviour, ACKs never stop for audit storage, GAP bounds; 'audit full' wire code pre-pilot via transport ADR, not a blocker, not in demo (§5.6) |
+| C6 | Engineering, with compliance endorsement | phEnable check vs G7 | CLOSED (joint ruling 2026-11-11): before commissioning kek_unavailable pattern; after, deliver + latched FAULT + alarm + backoff, block seals/AK/rotation; no plaintext or software keys; > 24 h incident review; NV_commissioned set-only bit + record 73 (§3.1) |
+| C7 | CT-01 | Runtime TPM2_HMAC failure | CLOSED (ruled 2026-11-11): dmethod 4 KEYED_FAILED + latched FAULT, delivery continues; record 71 tpm_recovered chains from the last good link (§4.3) |
+| C8 | CT-01 | TPM latency: if M5 shows one TPM2_HMAC per group does not fit 20 ms, pick O1 batched HMAC (dmethod 5), O2 async Sign, or O3 dmode 2 (§2) | OPEN (decide by M5) |
+| C9 | CT-01 | After a TPM Clear on a commissioned device (NV_commissioned gone): keep C6 rule 1 (all 'F'), or treat a verified record 73 under the inventory S_0 key as proof of commissioning and use rule 2 (§3.1) | OPEN (by M2) |
+| C10 | Engineering | ownerAuth / lockoutAuth custody: two-person sealed in the key ceremony (PROPOSED) or discarded (§3.1) | OPEN (by M2) |
+| C11 | Engineering | Acknowledge that A009 F53 makes random platformAuth + HierarchyControl both mandatory, auth first (amends C2's "prefer HierarchyControl") | OPEN (by M2) |
+| C13 | CT-01 | A011 F67: if the level-4 entry (75 + signed CHECKPOINT + NV bump) keeps failing (control slice unwritable, TPM Sign failing), keep withholding ACKs (PROPOSED, the fail-closed reading), or deliver count-only with alarm only; the first conflicts with C5 "ACKs never stop for audit storage" in this narrow case (§5.6). A012 recommends an explicit time bound: after N s of failed entry fall back to count-only with a holder alarm (the counter file is durable anyway). Not decided | OPEN (by M4) |
+| C12 | Compliance | A010 F65: incident review at level-4 entry instead of after 24 h (gap_24h kept as second escalation) (§5.6) | OPEN (before pilot) |
 
 ## Appendix A. codes.hpp (NORMATIVE; FROZEN at M0 with the v0.3.3 bytes; A011 F66; generated from tests/spec/codes_tables_v0_3_5.py, which asserts the numbers and names equal v0.3.4; never renumbered, append only)
 Enums with fixed numbers: rec_type 1 GENESIS, 2 EVENT, 3 CHECKPOINT, 4 EPOCH_START; actor_class 0-4 (§4.1); dmethod 1-4 (5 reserved); dmode 1-2;

@@ -1,5 +1,5 @@
 # audit_chain - keyed, checkpointed audit chain for CT-01 (M1: verifier, schema/writer library).
-# Separate tree; never builds against /workspace/ct01 or ct01d.
+# Separate tree; never builds against the CT-01 device tree or ct01d.
 cmake_minimum_required(VERSION 3.16)
 project(audit_chain LANGUAGES CXX)
 

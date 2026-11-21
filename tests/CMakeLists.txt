@@ -41,7 +41,7 @@ if(AUDIT_ORACLE_PYTHON)
            $<TARGET_FILE:dump_layout> ${CMAKE_CURRENT_SOURCE_DIR}/spec/layout_v0_3_4.log)
 endif()
 
-# Fuzz targets (DESIGN 9): record parser + chain verifier. Two front ends each, as in tans_branch:
+# Fuzz targets (DESIGN 9): record parser + chain verifier. Two front ends each:
 #  * <name>_driver: plain main() (fuzz/standalone_driver.cpp), any compiler; replays the seeds READ-ONLY
 #    and runs seeded random mutations in memory (never writes files).
 #  * <name>: libFuzzer (-fsanitize=fuzzer), clang only, AUDIT_FUZZ=ON. Smoke run in CTest with a scratch
