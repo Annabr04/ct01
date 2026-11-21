@@ -1,0 +1,54 @@
+common body 144 | EVENT 180 | signed body 216 | SIGNED 316
+   0   4 magic
+   4   1 version
+   5   1 rec_type
+   6   2 event_code
+   8   4 rec_len
+  12   2 reason
+  14   1 actor_class
+  15   1 dmethod
+  16   8 seq
+  24   4 epoch
+  28   1 len_bucket
+  29   1 sflags
+  30   1 dmode
+  31   1 reserved1
+  32   8 ts_ms
+  40   8 mono_ms
+  48   8 subj_first
+  56   8 subj_last
+  64   4 count
+  68   4 actor_uid
+  72   8 bytes
+  80  32 digest
+ 112  32 prev_link
+ 144   8 nv_export
+ 152   8 tpm_clock_ms
+ 160   4 tpm_reset_count
+ 164   4 tpm_restart_count
+ 168   4 recoveries_total
+ 172   4 gaps_total
+ 176   4 dfail_total
+ 180   4 ext_reserved
+ 184  32 d_agg
+ 216  32 tag
+ 248  64 sig
+ 312   4 crc32
+labels prefix-free: True []
+checkpoint pre-image bytes: 56 first byte 0x63 (TPMS_ATTEST magic starts 0xff)
+bucket(48..50) = {7} (a008 vitals length classes collapse to one bucket)
+buckets for 1 B .. 128 KiB: 18
+C4 placement: dmethod @15 u8, dmode @30 u8, reserved1 @31 u8; sizes: (180, 316)
+C4 dmethod/dmode rule cases: 21 pass
+C3 cases pass: threshold in frames, ts multiple of 1000 ms over 10000 random clocks, overlapping exact total suppressed
+v0.3.2 checks: codes 71-75 fit u16 event_code; tpmrec label prefix-free
+F60: dfail_total @176 u32, ext_reserved @180 u32, d_agg @184, tag @216, sig @248, crc @312 -> SIGNED 316
+F47: bucket(4 GiB + 1) = 34 | bucket(2^64-1) = 65 | 66 invalid
+F49/F52: sflags bit1/bit2 sticky rules + exit 6 cases pass
+F61: gaps_total increment per level-4 episode for counts 0/1/5 -> [1, 1, 5] (>= 1 always)
+F64: record 75 step rule cases pass; record 71 count saturates at 4294967295
+F61: gap counter slot 128 B (2 slots, K_e-tagged)
+v0.3.4: ZERO byte change: all 37 field offsets identical to v0.3.3; 144/180/216/316
+F71: d_agg covers every EVENT digest (zeros included); dmode-2 zero rule withdrawn
+F66: GENESIS reasons 1,2,4,5,6 force zeros; reason 3 needs a FAIL reason 1..40
+F70: contiguity cases pass (17 included; resets on 68 / 22 reseed / GENESIS; FAIL only for a 66 that under-covers)
